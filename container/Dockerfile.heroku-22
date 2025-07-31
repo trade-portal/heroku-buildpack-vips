@@ -65,7 +65,7 @@ RUN wget ${SPNG_URL}/v${SPNG_VERSION}.tar.gz \
   && ninja \
   && ninja install
 
-ARG VIPS_VERSION=8.14.3
+ARG VIPS_VERSION=8.17.1
 ARG VIPS_URL=https://github.com/libvips/libvips/archive/refs/tags
 
 RUN wget ${VIPS_URL}/v${VIPS_VERSION}/v${VIPS_VERSION}.tar.gz \
