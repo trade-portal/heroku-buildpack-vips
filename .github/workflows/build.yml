@@ -1,0 +1,46 @@
+name: Build libvips
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
+    inputs:
+      vips_version:
+        description: 'VIPS version to build'
+        required: false
+        default: '8.17.1'
+
+env:
+  VIPS_VERSION: ${{ github.event.inputs.vips_version || '8.17.1' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Run build script
+      run: |
+        chmod +x ./build.sh
+        ./build.sh
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: libvips-builds
+        path: build/*.tar.gz
+        retention-days: 7
+    
+    - name: Upload configuration logs
+      uses: actions/upload-artifact@v4
+      with:
+        name: configuration-logs
+        path: build/configurations/*.log
+        retention-days: 7
